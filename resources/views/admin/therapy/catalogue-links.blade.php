@@ -1,0 +1,3 @@
+<x-admin-layout title="Therapy registration settings"><div class="admin-content"><div class="admin-page-heading"><div><p class="admin-eyebrow">Children’s therapy settings</p><h1>Registration options</h1><p>Choose a list to manage its options.</p></div></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Settings list</th><th>Action</th></tr></thead><tbody>
+@can('route-admin-therapy-catalogues-index')@foreach(\App\Support\TherapyCatalogues::ITEMS as $key => $definition)<tr><td>{{ $definition['label'] }}</td><td><a href="{{ route('admin.therapy.catalogues.index', $key) }}">Manage</a></td></tr>@endforeach @endcan
+</tbody></table></div></div></x-admin-layout>

@@ -13,7 +13,7 @@
         <div class="hero-copy">
             <span class="pill"><span aria-hidden="true">●</span> Every journey matters</span>
             <h1 id="hero-title">Moving lives<br>forward, <span>together.</span></h1>
-            <p class="hero-slogan">Raising the esteem and capability among people with disabilities through the Church</p>
+            <p class="hero-slogan">{{ config('website.slogan') }}</p>
             <div class="hero-buttons">
                 <a class="button button-primary" href="#work">Discover our work <span aria-hidden="true">↗</span></a>
                 <a class="button button-outline" href="#about">Our story <span aria-hidden="true">→</span></a>
@@ -51,11 +51,28 @@
 
 <section class="people-strip" aria-label="What the ministry stands for"><div class="wrap people-grid"><div><strong>01</strong><span><b>Value &amp; potential</b><small>Every person matters.</small></span></div><div><strong>02</strong><span><b>Mobility</b><small>Practical aids, free to recipients.</small></span></div><div><strong>03</strong><span><b>Inclusion</b><small>Access and opportunity in society.</small></span></div></div></section>
 
-<section class="give-section section-pad" id="give" aria-labelledby="give-title"><div class="wrap give-grid"><div><span class="eyebrow">Get involved</span><h2 id="give-title">Help make mobility<br><span>possible for more people.</span></h2><p>Support the ministry's work in Uganda. We also welcome restored wheelchairs and crutches.</p><a class="button button-primary" href="#contact">Ask about giving in Uganda <span aria-hidden="true">↗</span></a></div><div class="give-options"><span>Donate from abroad</span><a href="https://fathersheartmobility.org/donate/canada" target="_blank" rel="noopener noreferrer">Canada <span aria-hidden="true">↗</span></a><a href="https://fathersheartmobility.org/donate/usa" target="_blank" rel="noopener noreferrer">USA <span aria-hidden="true">↗</span></a><a href="https://fathersheartmobility.org/donate/uk" target="_blank" rel="noopener noreferrer">UK <span aria-hidden="true">↗</span></a><small>These links open the ministry's existing donation pages.</small></div></div></section>
+<section class="give-section section-pad" id="give" aria-labelledby="give-title">
+    <div class="wrap give-grid">
+        <div>
+            <span class="eyebrow">Get involved</span>
+            <h2 id="give-title">Help make mobility<br><span>possible for more people.</span></h2>
+            <p>Support the ministry's work in Uganda. We also welcome restored wheelchairs and crutches.</p>
+            <a class="button button-primary" href="#contact">Ask about giving in Uganda <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="give-options">
+            <span>Giving from abroad</span>
+            <a href="#donate-canada">Canada <span aria-hidden="true">↓</span></a>
+            <a href="#donate-usa">USA <span aria-hidden="true">↓</span></a>
+            <a href="#donate-uk">United Kingdom <span aria-hidden="true">↓</span></a>
+            <small>Choose a country to read its giving options here on this website.</small>
+        </div>
+    </div>
+    @include('website.partials.donation-details')
+</section>
 
-<section class="faq-section section-pad" aria-labelledby="faq-title"><div class="wrap faq-grid"><div><span class="eyebrow">Questions &amp; answers</span><h2 id="faq-title">Curious about<br><span>Father's Heart?</span></h2><p>Here are a few things to know before you get in touch.</p><a class="text-link" href="#contact">Ask us a question <span aria-hidden="true">↗</span></a></div><div class="faq-list"><details><summary>Are mobility devices free?</summary><p>Yes. Wheelchairs and other mobility devices are provided to recipients free of charge.</p></details><details><summary>Can I request a device online?</summary><p>Online requests are temporarily unavailable. Call the office to ask about a free mobility device or a group arrangement.</p></details><details><summary>Can I visit the Ministry Centre?</summary><p>Visits are by appointment only. Please call before coming.</p></details><details><summary>How can I give?</summary><p>Contact the office for giving in Uganda or gifts in kind. Donors in Canada, the USA, and the UK can use the existing donation pages linked above.</p></details></div></div></section>
+<section class="faq-section section-pad" aria-labelledby="faq-title"><div class="wrap faq-grid"><div><span class="eyebrow">Questions &amp; answers</span><h2 id="faq-title">Curious about<br><span>Father's Heart?</span></h2><p>Here are a few things to know before you get in touch.</p><a class="text-link" href="#contact">Ask us a question <span aria-hidden="true">↗</span></a></div><div class="faq-list"><details><summary>Are mobility devices free?</summary><p>Yes. Wheelchairs and other mobility devices are provided to recipients free of charge.</p></details><details><summary>Can I request a device online?</summary><p>Online requests are temporarily unavailable. Call the office to ask about a free mobility device or a group arrangement.</p></details><details><summary>Can I visit the Ministry Centre?</summary><p>Visits are by appointment only. Please call before coming.</p></details><details><summary>How can I give?</summary><p>Contact the office for giving in Uganda or gifts in kind. Choose Canada, USA, or the UK in the giving section to read the options on this website.</p></details></div></div></section>
 
-<section class="contact-section section-pad" id="contact" aria-labelledby="contact-title"><div class="wrap"><div class="section-heading"><div><span class="eyebrow">Let's connect</span><h2 id="contact-title">Have a question<br><span>or want to help?</span></h2></div><p>For mobility assistance, a group visit, or a donation, reach our office directly.</p></div><div class="contact-grid"><a href="tel:+256393242101"><small>Call us</small><strong>0393 242 101</strong><span aria-hidden="true">↗</span></a><a href="tel:+256772414944"><small>Or call</small><strong>0772 414 944</strong><span aria-hidden="true">↗</span></a><a href="mailto:fathersheartmobility@gmail.com"><small>Email us</small><strong>fathersheartmobility@gmail.com</strong><span aria-hidden="true">↗</span></a></div><div class="safety-note"><span aria-hidden="true">!</span><p><strong>Mobility devices are free.</strong> Never pay someone to request one. Online requests are temporarily unavailable, and Ministry Centre visits are by appointment only.</p></div></div></section>
+<section class="contact-section section-pad" id="contact" aria-labelledby="contact-title"><div class="wrap"><div class="section-heading"><div><span class="eyebrow">Let's connect</span><h2 id="contact-title">Have a question<br><span>or want to help?</span></h2></div><p>For mobility assistance, a group visit, or a donation, reach our office directly.</p></div><div class="contact-grid"><a href="tel:{{ config('website.contact.phone_primary.dial') }}"><small>Call us</small><strong>{{ config('website.contact.phone_primary.display') }}</strong><span aria-hidden="true">↗</span></a><a href="tel:{{ config('website.contact.phone_secondary.dial') }}"><small>Or call</small><strong>{{ config('website.contact.phone_secondary.display') }}</strong><span aria-hidden="true">↗</span></a><a href="mailto:{{ config('website.contact.email') }}"><small>Email us</small><strong>{{ config('website.contact.email') }}</strong><span aria-hidden="true">↗</span></a></div><div class="safety-note"><span aria-hidden="true">!</span><p><strong>Mobility devices are free.</strong> Never pay someone to request one. Online requests are temporarily unavailable, and Ministry Centre visits are by appointment only.</p></div></div></section>
 
 <dialog class="photo-lightbox" data-photo-lightbox aria-label="Photo viewer"><button type="button" data-lightbox-close aria-label="Close photo">×</button><img data-lightbox-image src="" alt=""><p data-lightbox-title></p></dialog>
 @endsection

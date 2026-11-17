@@ -1,0 +1,16 @@
+@props(['subcounty', 'districts', 'modalId', 'creating' => false])
+@php($returning = old('_modal') === $modalId)
+<dialog class="admin-dialog" id="{{ $modalId }}" aria-labelledby="{{ $modalId }}-title" @if($returning) open @endif>
+    <div class="admin-dialog-head"><div><p class="admin-eyebrow">Locations</p><h2 id="{{ $modalId }}-title">{{ $creating ? 'Add subcounty-tier unit' : 'Edit local unit' }}</h2><p>Includes subcounties, town councils and city divisions.</p></div><button type="button" class="admin-dialog-close" data-dialog-close aria-label="Close dialog">&times;</button></div>
+    @if($returning && $errors->any()) <div class="admin-error" role="alert"><strong>Please check the form.</strong><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div> @endif
+    <form class="admin-dialog-form" method="POST" action="{{ $creating ? route('admin.subcounties.store') : route('admin.subcounties.update', $subcounty) }}">
+        @csrf @unless($creating) @method('PUT') @endunless
+        <input type="hidden" name="_modal" value="{{ $modalId }}">
+        <div class="admin-field-grid"><label>District or city<select name="district_id" required><option value="">Select a district</option>@foreach($districts as $district)<option value="{{ $district->id }}" @selected(($returning ? old('district_id') : ($subcounty->district_id ?? request('district_id'))) == $district->id)>{{ $district->name }}{{ $district->kind === 'city' ? ' City' : '' }}</option>@endforeach</select></label><label>Name<input name="name" value="{{ $returning ? old('name') : $subcounty->name }}" required maxlength="120"></label><label>Type<select name="kind" required>@foreach(['subcounty' => 'Subcounty', 'town_council' => 'Town council', 'division' => 'Division'] as $value => $label)<option value="{{ $value }}" @selected(($returning ? old('kind') : ($subcounty->kind ?: 'subcounty')) === $value)>{{ $label }}</option>@endforeach</select></label><label>UBOS code <small>(optional)</small><input name="ubos_code" value="{{ $returning ? old('ubos_code') : $subcounty->ubos_code }}" maxlength="16"></label><label>Status<select name="is_active"><option value="1" @selected(($returning ? old('is_active', '1') : (int) ($subcounty->is_active ?? true)) == 1)>Active</option><option value="0" @selected(($returning ? old('is_active') : (int) ($subcounty->is_active ?? true)) == 0)>Inactive</option></select></label></div>
+        @if($subcounty->source_id)<p class="admin-help">Imported location key: {{ $subcounty->source_id }}.</p>@endif
+        <div class="admin-dialog-actions"><button type="button" class="admin-secondary-button" data-dialog-close>Cancel</button><button class="admin-primary-link" type="submit">{{ $creating ? 'Add local unit' : 'Save changes' }}</button></div>
+    </form>
+    @unless($creating) @can('route-admin-subcounties-destroy')
+        <form class="admin-dialog-danger" method="POST" action="{{ route('admin.subcounties.destroy', $subcounty) }}" onsubmit="return confirm('Archive this local unit? Existing linked records will be preserved.');">@csrf @method('DELETE')<input type="hidden" name="_modal" value="{{ $modalId }}"><button class="admin-text-danger" type="submit">Archive local unit</button></form>
+    @endcan @endunless
+</dialog>

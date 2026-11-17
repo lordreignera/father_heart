@@ -71,4 +71,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasAnyRole(['Super Administrator', 'super-admin']);
+    }
 }

@@ -1,0 +1,15 @@
+{
+    "id": "./",
+    "name": "Father's Heart Mobility Ministry",
+    "short_name": "Father's Heart",
+    "description": "Father's Heart Mobility Ministry in Uganda",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#fffaf5",
+    "theme_color": "#3b2b23",
+    "icons": [
+        { "src": "images/app-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+        { "src": "images/app-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    ]
+}

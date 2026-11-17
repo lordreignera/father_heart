@@ -1,0 +1,8 @@
+<x-admin-layout title="Children’s therapy"><div class="admin-content">
+    <div class="admin-page-heading"><div><p class="admin-eyebrow">Children’s therapy</p><h1>Children</h1><p>Register children and record their therapy visits.</p></div>@can('route-admin-therapy-children-create')<a class="admin-primary-link" href="{{ route('admin.therapy.children.create') }}">Register child</a>@endcan</div>
+    @if(session('status'))<p class="admin-notice">{{ session('status') }}</p>@endif
+    <form class="admin-filter" method="GET"><label>Search child<input type="search" name="q" value="{{ request('q') }}" placeholder="Name"></label><button>Search</button><a class="admin-filter-reset" href="{{ route('admin.therapy.children.index') }}">Clear</a></form>
+    <div class="admin-table-wrap"><table class="admin-table admin-people-table"><thead><tr><th>Child</th><th>Registration date</th><th>District</th><th>Visits</th><th>Actions</th></tr></thead><tbody>
+    @forelse($children as $child)<tr><td data-label="Child">{{ $child->person?->full_name ?? 'Unavailable person' }}</td><td data-label="Registered">{{ $child->registered_on?->format('d M Y') }}</td><td data-label="District">{{ $child->district?->name ?? 'Not recorded' }}</td><td data-label="Visits">{{ $child->visits_count }}</td><td data-label="Actions">@can('route-admin-therapy-children-show')<a href="{{ route('admin.therapy.children.show', $child) }}">View</a>@endcan</td></tr>@empty<tr><td colspan="5">No children found.</td></tr>@endforelse
+    </tbody></table></div><div class="admin-pagination">{{ $children->links() }}</div>
+</div></x-admin-layout>

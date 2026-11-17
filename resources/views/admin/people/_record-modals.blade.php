@@ -1,0 +1,12 @@
+<dialog class="admin-dialog" id="person-view-{{ $person->id }}" aria-labelledby="person-view-title-{{ $person->id }}">
+    <div class="admin-dialog-head"><div><p class="admin-eyebrow">People registry</p><h2 id="person-view-title-{{ $person->id }}">Person details</h2><p>Basic information and care record summary.</p></div><button type="button" class="admin-dialog-close" data-dialog-close aria-label="Close dialog">&times;</button></div>
+    <dl class="admin-person-details"><div><dt>Person number</dt><dd>#{{ $person->id }}</dd></div><div><dt>Full name</dt><dd>{{ $person->full_name }}</dd></div><div><dt>Phone number</dt><dd>{{ $person->phone ?: 'Not recorded' }}</dd></div><div><dt>Assessments</dt><dd>{{ $person->assessments_count }}</dd></div><div><dt>Registered</dt><dd>{{ $person->has_legacy_assessment ? 'Historical — date unknown' : ($person->created_at?->format('d M Y') ?: 'Not recorded') }}</dd></div></dl>
+    <div class="admin-dialog-actions"><button class="admin-secondary-button" type="button" data-dialog-close>Close</button>@can('route-admin-people-show')<a class="admin-primary-link" href="{{ route('admin.people.show', $person) }}">Open full record</a>@endcan</div>
+</dialog>
+
+@can('route-admin-people-destroy')<dialog class="admin-dialog" id="person-delete-{{ $person->id }}" aria-labelledby="person-delete-title-{{ $person->id }}">
+    <div class="admin-dialog-head"><div><p class="admin-eyebrow">People registry</p><h2 id="person-delete-title-{{ $person->id }}">Delete person?</h2><p>Review the record before removing it from the registry.</p></div><button type="button" class="admin-dialog-close" data-dialog-close aria-label="Close dialog">&times;</button></div>
+    <div class="admin-person-delete-note"><strong>{{ $person->full_name }}</strong><p>@if($person->assessments_count || $person->media_consents_count) This person has assessments or consent records and cannot be deleted. @else This person will be removed from the registry. Their record is retained as an archived record. @endif</p></div>
+    <div class="admin-dialog-actions"><button class="admin-secondary-button" type="button" data-dialog-close>Cancel</button>@if(! $person->assessments_count && ! $person->media_consents_count)<form method="POST" action="{{ route('admin.people.destroy', $person) }}">@csrf @method('DELETE')<button class="admin-person-delete-confirm" type="submit">Delete person</button></form>@endif</div>
+</dialog>
+@endcan

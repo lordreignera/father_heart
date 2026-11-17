@@ -14,7 +14,14 @@ class AuthenticationTest extends TestCase
     {
         $response = $this->get('/login');
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSee('Welcome back')
+            ->assertSee('Father\'s Heart', false)
+            ->assertSee('data-password-toggle', false)
+            ->assertSee('name="email"', false)
+            ->assertSee('name="password"', false)
+            ->assertDontSee('images/slideshow/community1.jpg')
+            ->assertSeeInOrder(['class="auth-heading"', 'id="login-title"', 'class="auth-shell"'], false);
     }
 
     public function test_users_can_authenticate_using_the_login_screen(): void

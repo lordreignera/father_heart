@@ -162,7 +162,7 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+        // Staff accounts are created by an administrator, not public registration.
         Features::resetPasswords(),
         // Features::emailVerification(),
         Features::updateProfileInformation(),

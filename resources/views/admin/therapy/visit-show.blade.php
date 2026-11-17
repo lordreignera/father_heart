@@ -1,0 +1,4 @@
+<x-admin-layout title="Therapy visit"><div class="admin-content"><a class="admin-back" href="{{ route('admin.therapy.children.show', $visit->child) }}">&larr; Child record</a>
+<div class="admin-page-heading"><div><p class="admin-eyebrow">Therapy visit</p><h1>{{ $visit->child?->person?->full_name }}</h1><p>{{ $visit->visited_on->format('d M Y') }} · {{ ucfirst($visit->status) }}</p></div>@can('route-admin-therapy-visits-edit')<a class="admin-primary-link" href="{{ route('admin.therapy.visits.edit', $visit) }}">Edit visit</a>@endcan</div>
+@if(session('status'))<p class="admin-notice">{{ session('status') }}</p>@endif
+<section class="admin-form-card"><h2>Services</h2><p>{{ $visit->services->pluck('name')->join(', ') }}</p><h2>Observations / follow-up</h2><p class="admin-preserve-lines">{{ $visit->notes ?: 'Not recorded' }}</p><p class="admin-help">Recorded by {{ $visit->recorder?->name ?? 'Unknown' }}</p></section></div></x-admin-layout>

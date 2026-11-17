@@ -2,24 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call(RoleSeeder::class);
+        $this->call(UgandaLocationsSeeder::class);
+        $this->call(TherapyDisabilityOptionsSeeder::class);
+        $this->call(TherapyMusicOptionsSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Like EBIMS, a configured first account is created during normal seeding.
+        // An unconfigured installation still gets roles, but no default password.
+        if (filled(config('admin.email')) || filled(config('admin.password'))) {
+            $this->call(SuperAdminSeeder::class);
+        }
     }
 }
