@@ -242,7 +242,7 @@ h1, h2, h3, p { margin-top: 0; }
     .menu-lines::before, .menu-lines::after { position: absolute; left: 0; content: ''; }
     .menu-lines::before { top: -6px; }
     .menu-lines::after { top: 6px; }
-    .site-nav { position: absolute; top: 72px; right: 0; left: 0; display: none; align-items: stretch; gap: 0; padding: 10px 24px 22px; border-bottom: 1px solid var(--line); background: #fffaf5; box-shadow: 0 16px 25px rgb(65 40 25 / 10%); }
+    .site-nav { position: absolute; top: 72px; right: 0; left: 0; display: none; align-items: stretch; gap: 0; max-height: calc(100vh - 72px); max-height: calc(100dvh - 72px); overflow-y: auto; overscroll-behavior: contain; padding: 10px 24px 22px; border-bottom: 1px solid var(--line); background: #fffaf5; box-shadow: 0 16px 25px rgb(65 40 25 / 10%); }
     .site-nav.is-open { display: grid; }
     .site-nav a { padding: 12px 4px; font-size: 14px; }
     .site-nav .nav-cta { margin-top: 7px; text-align: center; }

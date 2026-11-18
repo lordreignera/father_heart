@@ -1,3 +1,13 @@
+// Keep the full navigation visible on desktop and collapse it on small screens.
+const mobileNav = document.querySelector('[data-admin-mobile-nav]');
+if (mobileNav && window.matchMedia) {
+    const mobileViewport = window.matchMedia('(max-width: 720px)');
+    const updateNavigation = () => { mobileNav.open = !mobileViewport.matches; };
+    updateNavigation();
+    if (mobileViewport.addEventListener) mobileViewport.addEventListener('change', updateNavigation);
+    else mobileViewport.addListener(updateNavigation);
+}
+
 // Shared district → subcounty selector for the intake and distribution forms.
 document.querySelectorAll('[data-dialog-open]').forEach((trigger) => {
     trigger.addEventListener('click', () => {

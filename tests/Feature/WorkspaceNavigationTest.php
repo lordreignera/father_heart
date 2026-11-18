@@ -30,13 +30,19 @@ class WorkspaceNavigationTest extends TestCase
         $staff = User::factory()->create()->givePermissionTo(['access-admin', 'route-admin-users-index']);
         $this->actingAs($staff)->get(route('admin.users.index'))->assertOk()->assertSee('User management')
             ->assertSee('Staff accounts')->assertSee('User guide')->assertDontSee('Historical team')
-            ->assertDontSee('Distribution events')->assertDontSee('Stock management');
-        $this->get(route('user-guide'))->assertOk()->assertSee('Register a person')->assertSee('Staff, roles and permissions')->assertSee('access-admin');
+            ->assertDontSee('Distribution events')->assertDontSee('Stock management')
+            ->assertSee('data-admin-mobile-nav open', false)->assertSee('Workspace menu');
+        $this->get(route('user-guide'))->assertOk()->assertSee('Register a person')->assertSee('Staff, roles and permissions')->assertSee('access-admin')->assertSee('Download guide')->assertSee('images/userguideline/loginpage.png', false)->assertSee('images/userguideline/peopleregistrypage.png', false);
+        $download = $this->get(route('user-guide.download'))->assertOk()->assertHeader('Content-Disposition', 'attachment; filename="fathers-heart-user-guide.html"')->assertSee('data:image/png;base64,', false)->assertSee('Manage inventory');
+        $this->assertStringContainsString('no-store', $download->headers->get('Cache-Control'));
+        $this->assertSame(6, substr_count($download->getContent(), 'data:image/png;base64,'));
     }
 
     public function test_guide_requires_workspace_access(): void
     {
         $this->get(route('user-guide'))->assertRedirect('/login');
+        $this->get(route('user-guide.download'))->assertRedirect('/login');
         $this->actingAs(User::factory()->create())->get(route('user-guide'))->assertForbidden();
+        $this->get(route('user-guide.download'))->assertForbidden();
     }
 }

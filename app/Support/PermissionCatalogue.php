@@ -101,6 +101,8 @@ class PermissionCatalogue
         if (isset($special[$name])) return $special[$name];
 
         $resources = [
+            'route-admin-testimonies-' => ['testimony videos', 'testimony video'],
+            'route-admin-inventory-items-' => ['inventory items', 'inventory item'],
             'route-admin-therapy-children-' => ['therapy children', 'therapy child'],
             'route-admin-therapy-visits-' => ['therapy visits', 'therapy visit'],
             'route-admin-therapy-documents-' => ['therapy documents', 'therapy document'],

@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\TherapyReportController;
 use App\Http\Controllers\Admin\TherapyDocumentController;
 use App\Http\Controllers\Admin\TherapyOptionController;
 use App\Http\Controllers\Admin\TherapyCatalogueController;
+use App\Http\Controllers\Admin\TestimonyVideoController;
 use App\Http\Controllers\StaffRegistrationController;
 use App\Models\Subcounty;
 use App\Http\Middleware\AuthorizeAdminRoute;
@@ -52,6 +53,9 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::view('/user-guide', 'admin.guide')->name('user-guide');
+    Route::get('/user-guide/download', function () {
+        return response()->view('admin.guide-download')->header('Content-Disposition', 'attachment; filename="fathers-heart-user-guide.html"')->header('Cache-Control', 'private, no-store');
+    })->name('user-guide.download');
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'can:access-admin', AuthorizeAdminRoute::class])
@@ -82,6 +86,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
                 })
                 ->orderBy('name')->get(['id', 'name', 'kind']);
         })->name('location-options.subcounties');
+        Route::get('testimonies', [TestimonyVideoController::class, 'index'])->name('testimonies.index');
+        Route::post('testimonies', [TestimonyVideoController::class, 'store'])->name('testimonies.store');
+        Route::get('testimonies/{testimony}/video', [TestimonyVideoController::class, 'show'])->name('testimonies.show');
         Route::middleware([])->group(function () {
             Route::resource('districts', DistrictController::class)->except('show');
             Route::resource('subcounties', SubcountyController::class)->except('show');
@@ -128,6 +135,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
             Route::get('inventory/movements', [InventoryMovementHistoryController::class, 'index'])->name('inventory.movements.index');
             Route::get('inventory/movements/export', [InventoryMovementHistoryController::class, 'export'])->name('inventory.movements.export');
             Route::post('inventory/items', [InventoryController::class, 'storeItem'])->name('inventory.items.store');
+            Route::put('inventory/items/{item}', [InventoryController::class, 'updateItem'])->name('inventory.items.update');
+            Route::delete('inventory/items/{item}', [InventoryController::class, 'destroyItem'])->name('inventory.items.destroy');
             Route::post('inventory/items/{item}/movements', [InventoryController::class, 'storeMovement'])->name('inventory.movements.store');
         });
         Route::middleware([])->group(function () {

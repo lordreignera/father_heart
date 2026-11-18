@@ -18,14 +18,17 @@
                 <span><strong>Father's Heart</strong><small>Mobility Ministry</small></span>
             </a>
             <div class="admin-side-label">Workspace</div>
+            <details class="admin-mobile-nav" data-admin-mobile-nav open>
+            <summary>Workspace menu <span aria-hidden="true">☰</span></summary>
             <nav class="admin-nav" aria-label="Workspace">
                 <a class="{{ request()->routeIs('dashboard') ? 'is-current' : '' }}" href="{{ route('dashboard') }}" @if(request()->routeIs('dashboard')) aria-current="page" @endif><span aria-hidden="true">▦</span> Overview</a>
-                @canany(['route-admin-people-index', 'route-admin-assessments-index', 'route-admin-historical-media', 'route-admin-historical-feedback-index'])
-                    <details class="admin-nav-group" @if(request()->routeIs('admin.people.*', 'admin.assessments.*', 'admin.historical.feedback.*') || request()->route('category') === 'media') open @endif><summary><span aria-hidden="true">♙</span> People &amp; care</summary><div class="admin-nav-group-links">
+                @canany(['route-admin-people-index', 'route-admin-assessments-index', 'route-admin-historical-media', 'route-admin-historical-feedback-index', 'route-admin-testimonies-index'])
+                    <details class="admin-nav-group" @if(request()->routeIs('admin.people.*', 'admin.assessments.*', 'admin.historical.feedback.*', 'admin.testimonies.*') || request()->route('category') === 'media') open @endif><summary><span aria-hidden="true">♙</span> People &amp; care</summary><div class="admin-nav-group-links">
                         @can('route-admin-people-index')<a class="{{ request()->routeIs('admin.people.*') ? 'is-current' : '' }}" href="{{ route('admin.people.index') }}">People</a>@endcan
                         @can('route-admin-assessments-index')<a class="{{ request()->routeIs('admin.assessments.*') ? 'is-current' : '' }}" href="{{ route('admin.assessments.index') }}">Assessments</a>@endcan
                         @can('route-admin-historical-media')<a class="{{ request()->route('category') === 'media' ? 'is-current' : '' }}" href="{{ route('admin.historical.index', 'media') }}">Historical media</a>@endcan
                         @can('route-admin-historical-feedback-index')<a class="{{ request()->routeIs('admin.historical.feedback.*') ? 'is-current' : '' }}" href="{{ route('admin.historical.feedback.index') }}">Historical feedback</a>@endcan
+                        @can('route-admin-testimonies-index')<a class="{{ request()->routeIs('admin.testimonies.*') ? 'is-current' : '' }}" href="{{ route('admin.testimonies.index') }}">Testimony videos</a>@endcan
                     </div></details>
                 @endcanany
                 @canany(['route-admin-therapy-children-index', 'route-admin-therapy-reports-index', 'route-admin-therapy-services-index', 'route-admin-therapy-options-index'])
@@ -71,6 +74,7 @@
                 <a class="{{ request()->routeIs('profile.show') ? 'is-current' : '' }}" href="{{ route('profile.show') }}" @if(request()->routeIs('profile.show')) aria-current="page" @endif><span aria-hidden="true">◎</span> My profile</a>
                 <a href="{{ route('home') }}" target="_blank" rel="noopener"><span aria-hidden="true">↗</span> View website</a>
             </nav>
+            </details>
             <div class="admin-side-footer">
                 <span class="admin-access-dot" aria-hidden="true"></span>
                 <span>Secure staff workspace</span>

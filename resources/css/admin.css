@@ -16,6 +16,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid #f47b29; outline-offs
 .admin-brand small { margin-top: 4px; color: #e6bda4; font-size: 9px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
 .admin-side-label { margin: 12px 12px -18px; color: #bda89a; font-size: 10px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
 .admin-nav { display: grid; gap: 5px; }
+.admin-mobile-nav > summary { display: none; }
 .admin-nav a { display: flex; align-items: center; gap: 13px; padding: 12px 14px; border-radius: 10px; color: #e6d5c8; font-size: 14px; font-weight: 700; text-decoration: none; transition: background .2s, color .2s; }
 .admin-nav a:hover, .admin-nav a.is-current { color: #fff; background: #674334; }
 .admin-nav a.is-current { box-shadow: inset 3px 0 #f47b29; }
@@ -120,6 +121,16 @@ a:focus-visible, button:focus-visible { outline: 3px solid #f47b29; outline-offs
 .district-combobox-list [role="option"], .district-no-results { display: block; padding: 9px 11px; }
 .district-combobox-list [role="option"] { cursor: pointer; }
 .district-combobox-list [role="option"]:hover, .district-combobox-list [aria-selected="true"] { background: #fff1e7; }
+.guide-illustration-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; margin-top: 14px; }
+.guide-illustration-grid figure { margin: 0; }
+.guide-illustration-grid svg { display: block; width: 100%; height: auto; border: 1px solid #eadbd1; border-radius: 10px; }
+.guide-illustration-grid figcaption { margin-top: 7px; font-size: 13px; color: #70584b; }
+.guide-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.guide-nav a { border: 1px solid #e5d1c3; border-radius: 999px; padding: 6px 12px; color: #74402a; font-size: 13px; font-weight: 700; text-decoration: none; }
+.guide-nav a:hover { background: #fff1e7; }
+.guide-screenshot { margin: 20px 0 0; }
+.guide-screenshot img { display: block; width: 100%; max-width: 100%; height: auto; border: 1px solid #eadbd1; border-radius: 10px; }
+.guide-screenshot figcaption { margin-top: 8px; color: #70584b; font-size: 13px; }
 .admin-field-grid input:focus, .admin-field-grid select:focus, .admin-filter input:focus, .admin-filter select:focus { outline: 2px solid #ed7628; outline-offset: 1px; }
 .admin-help { margin: 18px 0 0; color: #8a7669; font-size: 12px; line-height: 1.6; }
 .admin-form-actions { display: flex; justify-content: flex-end; margin-top: 24px; }
@@ -346,4 +357,21 @@ a:focus-visible, button:focus-visible { outline: 3px solid #f47b29; outline-offs
     .admin-filter input, .admin-filter select { max-width: 100%; }
     .admin-role-filter label, .admin-role-filter select { width: 100%; }
     .admin-role-filter select { min-width: 0; }
+    .admin-mobile-nav > summary { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 10px 12px; border: 1px solid #805f4f; border-radius: 9px; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; list-style: none; }
+    .admin-mobile-nav > summary::-webkit-details-marker { display: none; }
+    .admin-mobile-nav > summary:focus-visible { outline: 3px solid #f47b29; outline-offset: 3px; }
+    .admin-mobile-nav[open] > summary { margin-bottom: 8px; }
+    .admin-mobile-nav .admin-nav { max-height: min(65vh, 520px); max-height: min(65dvh, 520px); overflow-y: auto; overscroll-behavior: contain; }
+    .admin-nav a, .admin-nav-group summary { min-height: 44px; }
+    .admin-filter label { width: 100%; min-width: 0; }
+    .admin-filter input, .admin-filter select { width: 100%; min-width: 0; }
+    .admin-field-grid > *, .admin-detail-grid > *, .admin-form-card, .admin-dialog form { min-width: 0; }
+    .admin-field-grid input, .admin-field-grid select, .admin-wide-label input, .admin-wide-label textarea { max-width: 100%; min-width: 0; }
+    .admin-field-grid input, .admin-field-grid select, .admin-wide-label input, .admin-wide-label textarea, .admin-filter input, .admin-filter select { font-size: 16px; }
+    .admin-dialog { max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); }
+    .admin-dialog input[type="file"] { width: 100%; max-width: 100%; }
+    .admin-person-actions { justify-content: flex-end; }
+    .admin-person-action { min-height: 40px; }
+    .admin-detail-list div { grid-template-columns: minmax(0, 120px) minmax(0, 1fr); }
+    .admin-detail-list dd { overflow-wrap: anywhere; }
 }

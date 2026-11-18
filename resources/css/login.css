@@ -155,6 +155,7 @@
     .auth-heading h1 { font-size: 34px; }
     .auth-heading .auth-intro { margin-bottom: 24px; }
     .auth-panel { padding: 34px 22px 24px; }
+    .auth-field input, .auth-field select { font-size: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { .auth-submit { transition: none; } }
 
@@ -182,3 +183,6 @@
 .auth-registration .auth-field select:focus { border-color: #795a46; outline: 2px solid rgb(121 90 70 / 18%); }
 .auth-registration small { color: #766c65; font-size: 12px; }
 .auth-registration .auth-password-wrap input { padding-right: 48px; }
+@media (max-width: 520px) {
+    .auth-registration .auth-field input, .auth-registration .auth-field select { font-size: 16px; }
+}

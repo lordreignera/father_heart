@@ -17,7 +17,7 @@ class InventoryController extends Controller
     public function index(Request $request): View
     {
         $filters = $request->validate(['q' => ['nullable', 'string', 'max:160']]);
-        $items = InventoryItem::query()->when(filled($filters['q'] ?? null), fn ($query) => $query->where('name', 'like', '%'.$filters['q'].'%'))
+        $items = InventoryItem::query()->withCount('movements')->when(filled($filters['q'] ?? null), fn ($query) => $query->where('name', 'like', '%'.$filters['q'].'%'))
             ->orderBy('name')->paginate(25)->withQueryString();
         $movements = InventoryMovement::with(['item', 'recorder'])->orderByDesc('occurred_on')->orderByDesc('id')->limit(20)->get();
         return view('admin.inventory.index', compact('items', 'movements'));
@@ -80,5 +80,31 @@ class InventoryController extends Controller
         });
 
         return redirect()->route('admin.inventory.index')->with('status', 'Inventory movement recorded.');
+    }
+
+    public function updateItem(Request $request, InventoryItem $item): RedirectResponse
+    {
+        $data = $request->validate(['name' => ['required', 'string', 'max:160', Rule::unique('inventory_items', 'name')->ignore($item->id)], 'unit' => ['required', 'string', 'max:40']]);
+        DB::transaction(function () use ($item, $data): void {
+            $locked = InventoryItem::whereKey($item->id)->lockForUpdate()->firstOrFail();
+            if ($data['unit'] !== $locked->unit && ($locked->opening_date || $locked->movements()->exists() || (int) $locked->quantity !== 0)) {
+                throw ValidationException::withMessages(['unit' => 'The unit cannot be changed after an opening count or stock movement.']);
+            }
+            $locked->update($data);
+        });
+        return redirect()->route('admin.inventory.index')->with('status', 'Inventory item updated. Stock balances and movement history are unchanged.');
+    }
+
+    public function destroyItem(Request $request, InventoryItem $item): RedirectResponse
+    {
+        $request->validate(['confirm' => ['required', 'accepted']]);
+        DB::transaction(function () use ($item): void {
+            $locked = InventoryItem::whereKey($item->id)->lockForUpdate()->firstOrFail();
+            if ($locked->opening_date || (int) $locked->quantity !== 0 || $locked->movements()->exists()) {
+                throw ValidationException::withMessages(['item' => 'This item has an opening count or stock history and cannot be deleted.']);
+            }
+            $locked->delete();
+        });
+        return redirect()->route('admin.inventory.index')->with('status', 'Unused inventory item deleted.');
     }
 }

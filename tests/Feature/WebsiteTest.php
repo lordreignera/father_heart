@@ -12,6 +12,7 @@ class WebsiteTest extends TestCase
             ->assertOk()
             ->assertSee(config('website.slogan'))
             ->assertSee(config('website.contact.email'))
+            ->assertSee('data-site-menu-toggle', false)->assertSee('aria-controls="site-menu"', false)
             ->assertSee('tel:'.config('website.contact.phone_primary.dial'), false)
             ->assertSee('id="about"', false)
             ->assertSee('id="work"', false)

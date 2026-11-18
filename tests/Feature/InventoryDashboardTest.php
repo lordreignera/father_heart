@@ -24,6 +24,33 @@ class InventoryDashboardTest extends TestCase
         return $user;
     }
 
+    public function test_inventory_items_can_be_viewed_edited_and_deleted_only_when_safe(): void
+    {
+        $admin = $this->admin();
+        $item = InventoryItem::create(['name' => 'Walker', 'unit' => 'item']);
+        $this->actingAs($admin)->get(route('admin.inventory.index'))->assertOk()->assertSee('inventory-view-'.$item->id)->assertSee('inventory-edit-'.$item->id)->assertSee('inventory-delete-'.$item->id);
+        $this->put(route('admin.inventory.items.update', $item), ['name' => 'Adult walker', 'unit' => 'piece'])->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('inventory_items', ['id' => $item->id, 'name' => 'Adult walker', 'unit' => 'piece']);
+        $this->delete(route('admin.inventory.items.destroy', $item), [])->assertSessionHasErrors('confirm');
+        $this->delete(route('admin.inventory.items.destroy', $item), ['confirm' => 1])->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertDatabaseMissing('inventory_items', ['id' => $item->id]);
+    }
+
+    public function test_inventory_history_cannot_be_deleted_or_units_changed_and_permissions_are_enforced(): void
+    {
+        $admin = $this->admin();
+        $item = InventoryItem::create(['name' => 'Wheelchair', 'unit' => 'item']);
+        $this->actingAs($admin)->post(route('admin.inventory.movements.store', $item), ['type' => 'opening', 'quantity' => 0, 'occurred_on' => now('Africa/Kampala')->toDateString(), 'opening_confirmed' => 1])->assertRedirect()->assertSessionHasNoErrors();
+        $this->delete(route('admin.inventory.items.destroy', $item), ['confirm' => 1])->assertSessionHasErrors('item');
+        $this->put(route('admin.inventory.items.update', $item), ['name' => 'Wheelchair', 'unit' => 'box'])->assertSessionHasErrors('unit');
+        $this->put(route('admin.inventory.items.update', $item), ['name' => 'Wheelchair updated', 'unit' => 'item'])->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('inventory_items', ['id' => $item->id, 'quantity' => 0, 'unit' => 'item']);
+        $this->assertDatabaseCount('inventory_movements', 1);
+        $limited = User::factory()->create()->givePermissionTo(['access-admin', 'route-admin-inventory-index']);
+        $this->actingAs($limited)->put(route('admin.inventory.items.update', $item), ['name' => 'Forged', 'unit' => 'item'])->assertForbidden();
+        $this->delete(route('admin.inventory.items.destroy', $item), ['confirm' => 1])->assertForbidden();
+    }
+
     public function test_historical_stock_is_only_shown_as_unverified_reference(): void
     {
         LegacySourceRecord::create(['source_key' => hash('sha256', 'stock'), 'source_database' => 'fathersheart', 'source_table' => 'cane', 'source_row_id' => '1', 'checksum' => hash('sha256', 'stock'), 'raw_payload' => ['id' => 1, 'available' => 42], 'status' => 'staged']);
