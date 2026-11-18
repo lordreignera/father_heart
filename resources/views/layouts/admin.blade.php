@@ -7,6 +7,7 @@
     <x-pwa-head />
     <title>{{ $title ?? 'Dashboard' }} | Father's Heart Mobility Ministry</title>
     @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.js', 'resources/js/admin-locations.js', 'resources/js/admin-table-tools.js'])
+    @if(request()->routeIs('profile.show')) @livewireStyles @endif
 </head>
 <body class="admin-body" @if(auth()->user()->isSuperAdmin()) data-table-page-export="true" @endif>
     <a class="admin-skip" href="#main-content">Skip to content</a>
@@ -67,7 +68,7 @@
                     </div></details>
                 @endcanany
                 <a class="{{ request()->routeIs('user-guide') ? 'is-current' : '' }}" href="{{ route('user-guide') }}"><span aria-hidden="true">?</span> User guide</a>
-                <a href="{{ route('profile.show') }}"><span aria-hidden="true">◎</span> My profile</a>
+                <a class="{{ request()->routeIs('profile.show') ? 'is-current' : '' }}" href="{{ route('profile.show') }}" @if(request()->routeIs('profile.show')) aria-current="page" @endif><span aria-hidden="true">◎</span> My profile</a>
                 <a href="{{ route('home') }}" target="_blank" rel="noopener"><span aria-hidden="true">↗</span> View website</a>
             </nav>
             <div class="admin-side-footer">
@@ -78,7 +79,7 @@
 
         <div class="admin-main-wrap">
             <header class="admin-topbar">
-                <span class="admin-topbar-title">Ministry overview</span>
+                <span class="admin-topbar-title">{{ request()->routeIs('profile.show') ? 'My profile' : 'Ministry overview' }}</span>
                 <div class="admin-topbar-actions">
                     <button class="admin-install" type="button" data-install-app hidden>Install app</button>
                     <span class="admin-user-name">{{ auth()->user()->name }}</span>
@@ -93,5 +94,6 @@
             </main>
         </div>
     </div>
+    @if(request()->routeIs('profile.show')) @stack('modals') @livewireScripts @endif
 </body>
 </html>

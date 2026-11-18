@@ -46,7 +46,7 @@ if (assessmentForm) {
         progress.textContent = mode === 'steps' ? `Step ${currentStep + 1} of ${sections.length}` : 'Full form';
         previous.hidden = mode === 'full' || currentStep === 0;
         next.hidden = mode === 'full' || currentStep === sections.length - 1;
-        save.hidden = mode === 'steps' && currentStep !== sections.length - 1;
+        if (save) save.hidden = mode === 'steps' && currentStep !== sections.length - 1;
     }
 
     function showStep(index) {
